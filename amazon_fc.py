@@ -21,27 +21,39 @@ class Compartment:
     def __init__(self, compartment_number: int, product_numbers: List[int]):
         self.number = compartment_number
         self.product_numbers = product_numbers
-        self.product_list = []
+        self.products_stored = {}
         Compartment.all_compartments.append(self)
 
 
-def put_products_on_trolly(trolly):
-    pass
+def put_products_on_trolly(items: List, trolly: object): #specific trolly
+    for item in items:
+        for compartment in Compartment.all_compartments:
+            if trolly.compartment_number == compartment.number:
+                if item.number in compartment.product_numbers:
+                    trolly.product_list.append(item)
+                    items.remove(item)
+                
 
 def put_objects_on_shelf(trolly: object):
-#     for compartment in Compartment.all_compartments:
-#         if trolly.compartment_number == compartment.number:
-#             for product in trolly.product_list:    
-    pass
+    for compartment in Compartment.all_compartments:
+        if trolly.compartment_number == compartment.number:
+            for product in trolly.product_list:
+                if product.name not in compartment.products_stored:
+                    compartment.products_stored[product.name] = {"Quantity": 1, "Info": product}
+                else:
+                    compartment.products_stored[product.name]["Quantity"] += 1
+                trolly.product_list.remove(product)
 
 
 
 c1 = Compartment(1111, [1, 4])
 t1 = Trolly(c1.number)
 p1 = Product("bag", 1, "p1.png")
-p2 = Product("chair", 4, "p1.png")
+p2 = Product("chair", 3, "p1.png")
 
-t1.product_list.append(p1)
-t1.product_list.append(p2)
+item_list = [p1, p2]
+
+put_products_on_trolly(item_list, t1)
+
 print(t1.product_list)
-
+print(item_list)
