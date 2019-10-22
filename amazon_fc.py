@@ -31,14 +31,6 @@ class Shelf:
         for item in product_nums:
             self.compartments[item] = {"Quantity": 0, "Items Stored": None}
         Shelf.all_shelves.append(self)
-        print(self)
-
-
-
-s1 = Shelf(1111, [1])
-
-
-
 
 
 class Cart:
