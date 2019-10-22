@@ -2,6 +2,12 @@ from typing import List, Dict
 
 
 class Product:
+    """
+    Attrs:
+        product_name (str): The name of the product.
+        product_number (int): The product's identification number.
+        image (str): The picture of the product.
+    """
     def __init__(self, product_name: str, product_number: int, image: str):
         self.name = product_name
         self.number = product_number
