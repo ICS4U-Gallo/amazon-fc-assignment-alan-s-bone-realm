@@ -18,6 +18,14 @@ class Shelf:
         for item in product_nums:
             self.compartments[item] = {"Quantity": 0, "Items Stored": None}
         Shelf.all_shelves.append(self)
+        print(self)
+
+
+
+s1 = Shelf(1111, [1])
+
+
+
 
 
 class Cart:
@@ -169,5 +177,5 @@ truck1 = Truck(12, [123, 456])
 # print(truck1.orders)
 
 package1.send_to_truck("8101 Leslie Street")
-print(truck1.orders)
-print(truck1.orders[123].address)
+# print(truck1.orders)
+# print(truck1.orders[123].address)
