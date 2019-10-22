@@ -2,6 +2,13 @@ from typing import List, Dict
 
 
 class Item:
+    """
+    Attrs:
+        product_name (str): The name of the product.
+        product_number (int): An integer identification of the product.
+        barcode (int): An integer barcode of the product.
+        image (str): The picture of the product.
+    """
     def __init__(self, product_name: str, product_number: int, barcode: int, image: str):
         self.name = product_name
         self.number = product_number
@@ -10,6 +17,12 @@ class Item:
 
 
 class Shelf:
+    """
+    Attrs:
+        all_shelves (List[]): A list containing all the shelves.
+        shelf_number (int): An integer of the number of the shelf.
+        product_nums (List[int]): A list of unique item identifications numbers.
+    """
     all_shelves = []
 
     def __init__(self, shelf_number: int, product_nums: List[int]):
@@ -21,6 +34,10 @@ class Shelf:
 
 
 class Cart:
+    """
+    Attrs:
+        items_stored: An empty list.
+    """
     def __init__(self):
         self.items_stored = []
 
@@ -53,6 +70,13 @@ class Cart:
 
 
 class Bin:
+    """
+    Attrs:
+        all_bins: An empty list.
+        order_number (int): An integer representing the order number.
+        product_num_and_quantity (Dict[str, int]): A dictionary taking the product number and quantity.
+        items_contained: An empty list.
+    """
     all_bins = []
 
     def __init__(self, order_number: int, product_num_and_quantity: Dict[str, int]):
@@ -87,6 +111,14 @@ class Bin:
 
 
 class Package:
+    """
+    Attrs:
+        all_packages: An empty list.
+        order_num (int): An integer of the order number.
+        package_type (str): A string stating the type of package.
+        items: An empty list.
+        stamped: A boolean value.
+    """
     all_packages = []
 
     def __init__(self, order_num: int, package_type: str):
@@ -117,6 +149,12 @@ class Package:
 
 
 class Truck:
+    """
+    all_trucks: An empty list.
+    truck_number (int): An integer representing the truck number.
+    order_list (List[]): A list of all the orders.
+    orders: An empty dictionary.
+    """
     all_trucks = []
 
     def __init__(self, truck_number: int, order_list: List):
