@@ -1,7 +1,7 @@
 from typing import List, Dict
 
 
-class Product:
+class Item:
     def __init__(self, product_name: str, product_number: int, barcode: int, image: str):
         self.name = product_name
         self.number = product_number
@@ -9,46 +9,43 @@ class Product:
         self.image = image
 
 
-class Compartment:
-    all_compartments = []
+class Shelf:
+    all_shelves = []
 
-    def __init__(self, compartment_number: int, product_nums: List[int]):
-        self.number = compartment_number
-        self.shelves = {}
-        for product in product_nums:
-            self.shelves[product] = {"Quantity": 0, "Items Stored": None}
-        Compartment.all_compartments.append(self)
+    def __init__(self, shelf_number: int, product_nums: List[int]):
+        self.number = shelf_number
+        self.compartments = {}
+        for item in product_nums:
+            self.compartments[item] = {"Quantity": 0, "Items Stored": None}
+        Shelf.all_shelves.append(self)
 
 
-class Trolly:
-    all_trollies = []
-
+class Cart:
     def __init__(self):
         self.items_stored = []
-        Trolly.all_trollies.append(self)
 
-    def assign_trolly(self, compartment: object):
-        self.compartment = compartment
+    def assign_cart(self, shelf: object):
+        self.shelf = shelf
 
-    def scan_products_onto_trolly(self, items: List):
-        if hasattr(self, "compartment"):
+    def scan_items_onto_cart(self, items: List):
+        if hasattr(self, "shelf"):
             items_added = []
             for item in items:
-                if item.number in self.compartment.shelves.keys():
+                if item.number in self.shelf.compartments.keys():
                     self.items_stored.append(item)
                     items_added.append(item)
             for item in items_added:
                 items.remove(item)
 
     def put_items_onto_shelf(self):
-        if hasattr(self, "compartment"):
+        if hasattr(self, "shelf"):
             items_added = []
             for item in self.items_stored:
-                if self.compartment.shelves[item.number]["Items Stored"] is None:
-                    self.compartment.shelves[item.number]["Items Stored"] = []
-                self.compartment.shelves[item.number]["Items Stored"].append(
+                if self.shelf.compartments[item.number]["Items Stored"] is None:
+                    self.shelf.compartments[item.number]["Items Stored"] = []
+                self.shelf.compartments[item.number]["Items Stored"].append(
                     item)
-                self.compartment.shelves[item.number]["Quantity"] += 1
+                self.shelf.compartments[item.number]["Quantity"] += 1
                 items_added.append(item)
             for item in items_added:
                 self.items_stored.remove(item)
@@ -67,8 +64,8 @@ class Bin:
 
     def scan_items_into_bin(self):
         for item_num in self.products_needed.keys():
-            for compartment in Compartment.all_compartments:
-                for product, info in compartment.shelves.items():
+            for shelf in Shelf.all_shelves:
+                for product, info in shelf.compartments.items():
                     if item_num == product:
                         while info["Quantity"] > 0 and self.products_needed[item_num] > 0:
                             self.items_contained.append(
@@ -130,32 +127,32 @@ class Truck:
         Truck.all_trucks.append(self)
 
 
-product1 = Product("Bag", 1, 11, "bag.png")
-product2 = Product("Chair", 2, 22, "chair.png")
-product3 = Product("Pillow", 3, 33, "pillow.png")
-product4 = Product("Pillow", 3, 44, "pillow.png")
-items = [product1, product2, product3, product4]
+item1 = Item("Bag", 1, 11, "bag.png")
+item2 = Item("Chair", 2, 22, "chair.png")
+item3 = Item("Pillow", 3, 33, "pillow.png")
+item4 = Item("Pillow", 3, 44, "pillow.png")
+items = [item1, item2, item3, item4]
 
-compartment1 = Compartment(1111, [1, 3])
-# print(compartment1.shelves)
+shelf1 = Shelf(1111, [1, 3])
+# print(shelf1.compartments)
 
-trolly1 = Trolly()
+cart1 = Cart()
 
-# won't do anything since trolly not assigned to a compartment
-trolly1.scan_products_onto_trolly(items)
-# print(trolly1.items_stored)
+# won't do anything since cart not assigned to a shelf
+cart1.scan_items_onto_cart(items)
+# print(cart1.items_stored)
 # print(items)
 
-trolly1.assign_trolly(compartment1)
+cart1.assign_cart(shelf1)
 
-# products can now be scanned onto trolly
-trolly1.scan_products_onto_trolly(items)
-# print(trolly1.items_stored)
+# items can now be scanned onto cart
+cart1.scan_items_onto_cart(items)
+# print(cart1.items_stored)
 # print(items)
 
-trolly1.put_items_onto_shelf()
-# print(compartment1.shelves)
-# print(trolly1.items_stored)
+cart1.put_items_onto_shelf()
+# print(shelf1.compartments)
+# print(cart1.items_stored)
 
 bin1 = Bin(123, {1: 4, 3: 2})
 # print(bin1.products_needed)
@@ -169,7 +166,7 @@ package1.pack_items()
 # print(bin1.items_contained)
 
 truck1 = Truck(12, [123, 456])
-print(truck1.orders)
+# print(truck1.orders)
 
 package1.send_to_truck("8101 Leslie Street")
 print(truck1.orders)
