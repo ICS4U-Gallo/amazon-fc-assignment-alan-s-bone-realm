@@ -1,4 +1,4 @@
-from amazon_fc import *
+# from amazon_fc import *
 import arcade
 
 screen_width = 800
