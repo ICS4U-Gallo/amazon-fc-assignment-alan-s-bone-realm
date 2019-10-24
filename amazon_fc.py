@@ -28,6 +28,7 @@ class Shelf:
         product_nums (List[int]): A list of unique item identifications numbers.
 
     """
+
     all_shelves = []
 
     def __init__(self, shelf_number: int, product_nums: List[int]):
@@ -39,7 +40,8 @@ class Shelf:
 
 
 class Cart:
-    """
+    """Cart/trolly class
+
     Attrs:
         items_stored: An empty list.
     """
@@ -81,13 +83,15 @@ class Cart:
 
 
 class Bin:
-    """
+    """Bin class
+
     Attrs:
         all_bins: An empty list.
         order_number (int): An integer representing the order number.
         product_num_and_quantity (Dict[str, int]): A dictionary taking the product number and quantity.
         items_contained: An empty list.
     """
+
     all_bins = []
 
     def __init__(self, order_number: int, product_num_and_quantity: Dict[str, int]):
@@ -128,7 +132,8 @@ class Bin:
 
 
 class Package:
-    """
+    """Package class
+
     Attrs:
         all_packages: An empty list.
         order_num (int): An integer of the order number.
@@ -136,6 +141,7 @@ class Package:
         items: An empty list.
         stamped: A boolean value.
     """
+    
     all_packages = []
 
     def __init__(self, order_num: int, package_type: str):
@@ -171,12 +177,14 @@ class Package:
 
 
 class Truck:
-    """
+    """Truck class
+
     all_trucks: An empty list.
     truck_number (int): An integer representing the truck number.
     order_list (List[]): A list of all the orders.
     orders: An empty dictionary.
     """
+
     all_trucks = []
 
     def __init__(self, truck_number: int, order_list: List):
