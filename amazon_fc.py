@@ -1,29 +1,4 @@
 from typing import List, Dict
-import arcade
-
-screen_width = 800
-screen_height = 600
-
-def draw_box(x, y):
-    arcade.draw_rectangle_outline(x, y, 200, 200, arcade.color.WHITE)
-
-
-def on_draw(delta_time):
-    arcade.start_render()
-    pass
-
-
-def on_key_press(key, modifiers):
-    pass
-
-
-def on_key_release(key, modifiers):
-    pass
-
-
-def on_mouse_press(x, y, button, modifiers):
-    pass
-
 
 class Item:
     """Item class
@@ -52,6 +27,7 @@ class Shelf:
         product_nums (List[int]): A list of unique item identifications numbers.
 
     """
+
     all_shelves = []
 
     def __init__(self, shelf_number: int, product_nums: List[int]):
@@ -63,7 +39,8 @@ class Shelf:
 
 
 class Cart:
-    """
+    """Cart/trolly class
+
     Attrs:
         items_stored: An empty list.
     """
@@ -105,13 +82,15 @@ class Cart:
 
 
 class Bin:
-    """
+    """Bin class
+
     Attrs:
         all_bins: An empty list.
         order_number (int): An integer representing the order number.
         product_num_and_quantity (Dict[str, int]): A dictionary taking the product number and quantity.
         items_contained: An empty list.
     """
+
     all_bins = []
 
     def __init__(self, order_number: int, product_num_and_quantity: Dict[str, int]):
@@ -152,7 +131,8 @@ class Bin:
 
 
 class Package:
-    """
+    """Package class
+
     Attrs:
         all_packages: An empty list.
         order_num (int): An integer of the order number.
@@ -160,6 +140,7 @@ class Package:
         items: An empty list.
         stamped: A boolean value.
     """
+
     all_packages = []
 
     def __init__(self, order_num: int, package_type: str):
@@ -195,12 +176,14 @@ class Package:
 
 
 class Truck:
-    """
+    """Truck class
+
     all_trucks: An empty list.
     truck_number (int): An integer representing the truck number.
     order_list (List[]): A list of all the orders.
     orders: An empty dictionary.
     """
+
     all_trucks = []
 
     def __init__(self, truck_number: int, order_list: List):
@@ -255,34 +238,3 @@ truck1 = Truck(12, [123, 456])
 package1.send_to_truck("8101 Leslie Street")
 # print(truck1.orders)
 # print(truck1.orders[123].address)
-
-def setup():
-    arcade.open_window(screen_width, screen_height, "My Arcade Game")
-    arcade.set_background_color(arcade.color.BLACK)
-    arcade.schedule(on_update, 1/60)
-
-    # Override arcade window methods
-    window = arcade.get_window()
-    window.on_draw = on_draw
-    window.on_key_press = on_key_press
-    window.on_key_release = on_key_release
-    window.on_mouse_press = on_mouse_press
-
-
-def main():
-    arcade.open_window(screen_width, screen_height, "Amazon FC")
-    arcade.set_background_color(arcade.color.BLACK)
-
-    # Call on_draw every 60th of a second
-    arcade.schedule(on_draw, 1/60)
-    window = arcade.get_window
-    window.on_draw = on_draw
-    window.on_key_press = on_key_press
-    window.on_key_release = on_key_release
-    window.on_mouse_press = on_mouse_press
-    
-
-    arcade.run()
-
-if __name__ == "__main__":
-    main()
