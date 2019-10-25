@@ -4,6 +4,10 @@ import arcade
 screen_width = 800
 screen_height = 600
 
+def draw_box(x, y):
+    arcade.draw_rectangle_outline(x, y, 200, 200, arcade.color.WHITE)
+
+
 def on_draw(delta_time):
     arcade.start_render()
     pass
