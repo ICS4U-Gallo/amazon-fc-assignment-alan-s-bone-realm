@@ -5,8 +5,13 @@ screen_width = 800
 screen_height = 600
 iphone = afc.Item("iphone", 100, 200, "iphone.png")
 
+
 def draw_box(x, y):
     arcade.draw_rectangle_outline(x, y, 200, 200, arcade.color.WHITE)
+
+
+def box_animation():
+    pass
 
 
 def draw_item(text: str):
@@ -57,6 +62,7 @@ def main():
     
 
     arcade.run()
+
 
 if __name__ == "__main__":
     main()
