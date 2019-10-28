@@ -6,21 +6,26 @@ screen_height = 600
 iphone = afc.Item("iphone", 100, 200, "iphone.png")
 
 
-def draw_box(x, y):
-    arcade.draw_rectangle_outline(x, y, 200, 200, arcade.color.WHITE)
+class drawings:
+    def __init__(self, item_text: str):
+        self.item_text = text
+
+    
+    def next_prev():
+        arcade.draw_arc_outline(700, 300, )
 
 
-def box_animation():
-    pass
+    def draw_box():
+        arcade.draw_rectangle_outline(400, 300, 200, 200, arcade.color.WHITE)
+    
+    def draw_item(text: str):
+        arcade.draw_text(text, 400, 300, arcade.color.WHITE, 20, 200, "center", 'Comic Sans', True, False, "center", "center")
 
-
-def draw_item(text: str):
-    arcade.draw_text(text, 400, 300, arcade.color.WHITE, 20, 200, "center", 'Arial', True, False, "center", "center")
 
 def on_draw(delta_time):
     arcade.start_render()
-    draw_box(400, 300)
-    draw_item(iphone.name)
+    drawings.draw_box()
+    drawings.draw_item(iphone.name)
 
 
 def on_key_press(key, modifiers):
