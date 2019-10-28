@@ -67,7 +67,7 @@ class Cart:
                 items.remove(item)
 
     def scan_onto_shelf(self):
-        """Scan items into compartments in the shelf, from the trolly"""
+        """Scan item object from the trolly into compartments within the shelf"""
         if hasattr(self, "shelf"):
             items_added = []
             for item in self.items_stored:
@@ -192,49 +192,3 @@ class Truck:
         for order in order_list:
             self.orders[order] = None
         Truck.all_trucks.append(self)
-
-
-item1 = Item("Bag", 1, 11, "bag.png")
-item2 = Item("Chair", 2, 22, "chair.png")
-item3 = Item("Pillow", 3, 33, "pillow.png")
-item4 = Item("Pillow", 3, 44, "pillow.png")
-items = [item1, item2, item3, item4]
-
-shelf1 = Shelf(1111, [1, 3])
-# print(shelf1.compartments)
-
-cart1 = Cart()
-
-# won't do anything since cart not assigned to a shelf
-cart1.scan_onto_cart(items)
-# print(cart1.items_stored)
-# print(items)
-
-cart1.assign_cart(shelf1)
-
-# items can now be scanned onto cart
-cart1.scan_onto_cart(items)
-# print(cart1.items_stored)
-# print(items)
-
-cart1.scan_onto_shelf()
-# print(shelf1.compartments)
-# print(cart1.items_stored)
-
-bin1 = Bin(123, {1: 4, 3: 2})
-# print(bin1.products_needed)
-bin1.scan_into_bin()
-# print(bin1.products_needed)
-# print(bin1.items_contained)
-
-package1 = Package(123, "box")
-package1.pack_items()
-# print(package1.items)
-# print(bin1.items_contained)
-
-truck1 = Truck(12, [123, 456])
-# print(truck1.orders)
-
-package1.send_to_truck("8101 Leslie Street")
-# print(truck1.orders)
-# print(truck1.orders[123].address)
