@@ -83,7 +83,7 @@ class Cart:
                 self.items_stored.remove(item)
 
 
-class Order():
+class Order:
     all_orders = {}
 
     def __init__(self, number: int, product_num_and_quantity: Dict[int, int]):

@@ -47,7 +47,8 @@ def on_update(delta_time):
     global clicked_prev, clicked_next, truck
     global item
     if clicked_prev:
-        item -= 1
+        if item > 0:
+            item -= 1
         print(item)
         clicked_prev = False
 
