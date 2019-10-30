@@ -1,4 +1,5 @@
 from typing import List, Dict
+import random
 
 
 class Item:
@@ -11,13 +12,25 @@ class Item:
         image (str): The picture of the product.
 
     """
+    unsorted_items = []
+    sorted_items = []
+    max_barcodes = 1000000
+    barcodes = []
 
-    def __init__(self, product_name: str, product_number: int, barcode: int, image: str, length: int, width: int, height: int):
+    def __init__(self, product_name: str, product_number: int, image: str, length: int, width: int, height: int):
         self.name = product_name
         self.number = product_number
-        self.barcode = barcode
         self.image = image
         self.dimensions = (length, width, height)
+        while True:
+            if len(Item.barcodes) == Item.max_barcodes:
+                Item.max_barcodes *= 10
+            else:
+                self.barcode = random.randint(0, Item.max_barcodes)
+                if self.barcode not in Item.barcodes:
+                    Item.barcodes.append(self.barcode)
+                    break
+        Item.unsorted_items.append(self)
 
 
 class Shelf:
@@ -32,11 +45,11 @@ class Shelf:
 
     all_shelves = []
 
-    def __init__(self, shelf_number: int, product_nums: List[int]):
+    def __init__(self, shelf_number: int, product_numbers: List[int]):
         self.number = shelf_number
-        self.compartments = {}
-        for item in product_nums:
-            self.compartments[item] = {"Quantity": 0, "Items Stored": None}
+        self.compartments = []
+        for product_number in product_numbers:
+            self.compartments.append({"Product Number": product_number, "Quantity": 0, "Items Stored": None})
         Shelf.all_shelves.append(self)
 
 
@@ -60,25 +73,24 @@ class Cart:
             items: a list of item objects
         """
         if hasattr(self, "shelf"):
-            items_added = []
-            for item in items:
+            for item in Item.unsorted_items:
                 if item.number in self.shelf.compartments.keys():
                     self.items_stored.append(item)
-                    items_added.append(item)
-            for item in items_added:
-                items.remove(item)
+                    Item.sorted_items.append(item)
+                    Item.unsorted_items.remove(item)
 
     def scan_onto_shelf(self):
         """Scan item object from the trolly into compartments within the shelf"""
         if hasattr(self, "shelf"):
             items_added = []
             for item in self.items_stored:
-                if self.shelf.compartments[item.number]["Items Stored"] is None:
-                    self.shelf.compartments[item.number]["Items Stored"] = []
-                self.shelf.compartments[item.number]["Items Stored"].append(
-                    item)
-                self.shelf.compartments[item.number]["Quantity"] += 1
-                items_added.append(item)
+                for product in self.shelf.compartments:
+                    if product["Product Number"] == item.number:
+                        if product["Items Stored"] is None:
+                            product["Items Stored"] = []
+                        product["Items Stored"].append(item)
+                        product["Quantity"] += 1
+                        items_added.append(item)
             for item in items_added:
                 self.items_stored.remove(item)
 
@@ -119,23 +131,23 @@ class Bin:
 
     def scan_into_bin(self):
         """Scans items into the bin"""
-        for item_num in self.order.products_needed.keys():
+        for product_number in self.order.products_needed.keys():
             for shelf in Shelf.all_shelves:
-                for product, info in shelf.compartments.items():
-                    if item_num == product:
-                        while info["Quantity"] > 0 and self.order.products_needed[item_num] > 0:
-                            self.items_contained.append(
-                                info["Items Stored"][0])
-                            info["Items Stored"].pop(0)
-                            self.order.products_needed[item_num] -= 1
-                            info["Quantity"] -= 1
-                        if self.order.products_needed[item_num] == 0:
-                            self.order.products_needed[item_num] = None
+                for product in shelf.compartments:
+                    if product_number == product["Product number"]:
+                        while product["Quantity"] > 0 and self.order.products_needed[product_number] > 0:
+                            self.items_contained.append(product["Items Stored"][0])
+                            Item.sorted_items.remove(product["Items Stored"][0])
+                            product["Items Stored"].pop(0)
+                            self.order.products_needed[product_number] -= 1
+                            product["Quantity"] -= 1
+                        if self.order.products_needed[product_number] == 0:
+                            self.order.products_needed[product_number] = None
                         else:
                             # reserve items that are currently available but order will not be sent out for shipping until order fulfilled for the item
-                            items_missing = self.order.products_needed[item_num]
+                            items_missing = self.order.products_needed[product_number]
                             print(
-                                f"Order Fulfillment Invalid: {items_missing} more items of (product number: {product}) needed to complete order.")
+                                f"Order Fulfillment Invalid: {items_missing} more items of (product number: {product_number}) needed to complete order.")
 
         # remove products from order that are scanned into bin
         self.products_needed = {item_num: quantity for item_num,

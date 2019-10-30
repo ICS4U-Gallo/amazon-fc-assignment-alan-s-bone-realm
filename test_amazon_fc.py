@@ -2,51 +2,45 @@ from amazon_fc import *
 
 
 def test_Item():
-    steak = Item("Steak", 234876, 127321, "steakpic.jpg", 1, 2, 3)
+    steak = Item("Steak", 1, "steakpic.jpg", 1, 2, 3)
     assert steak.name == "Steak"
-    assert steak.number == 234876
-    assert steak.barcode == 127321
+    assert steak.number == 1
     assert steak.image == "steakpic.jpg"
 
-    fish = Item("Fish", 69420, 647787, "betafish.jpg", 3, 3, 3)
+    fish = Item("Fish", 2, "betafish.jpg", 3, 3, 3)
     assert fish.name == "Fish"
-    assert fish.number == 69420
-    assert fish.barcode == 647787
+    assert fish.number == 2
     assert fish.image == "betafish.jpg"
 
-    alans_left_shoe = Item("Alan Left Shoe", 234876, 4837553, "shoes.jpg", 2, 3, 1)
+    alans_left_shoe = Item("Alan Left Shoe", 3, "shoes.jpg", 2, 3, 1)
     assert alans_left_shoe.name == "Alan Left Shoe"
-    assert alans_left_shoe.number == 234876
-    assert alans_left_shoe.barcode == 4837553
+    assert alans_left_shoe.number == 3
     assert alans_left_shoe.image == "shoes.jpg"
 
 
 def test_Shelf():
     shelf1 = Shelf(1, [1, 2, 4])
     assert shelf1.number == 1
-    assert shelf1.compartments == {1: {"Quantity": 0, "Items Stored": None}, 2: {
-        "Quantity": 0, "Items Stored": None}, 4: {"Quantity": 0, "Items Stored": None}}
+    assert shelf1.compartments == [{"Product Number": 1, "Quantity": 0, "Items Stored": None}, {
+        "Product Number": 2, "Quantity": 0, "Items Stored": None}, {"Product Number": 4, "Quantity": 0, "Items Stored": None}]
 
-    shelf2 = Shelf(2, [3, 7, 6])
-    assert shelf2.number == 2
-    assert shelf2.compartments == {3: {"Quantity": 0, "Items Stored": None}, 7: {
-        "Quantity": 0, "Items Stored": None}, 6: {"Quantity": 0, "Items Stored": None}}
-
-    shelf3 = Shelf(3, [15, 5, 10])
-    assert shelf3.number == 3
-    assert shelf3.compartments == {15: {"Quantity": 0, "Items Stored": None}, 5: {
-        "Quantity": 0, "Items Stored": None}, 10: {"Quantity": 0, "Items Stored": None}}
+    shelf2 = Shelf(3, [3, 5, 10])
+    assert shelf2.number == 3
+    assert shelf2.compartments == [{"Product Number": 3, "Quantity": 0, "Items Stored": None}, {
+        "Product Number": 5, "Quantity": 0, "Items Stored": None}, {"Product Number": 10, "Quantity": 0, "Items Stored": None}]
 
 
 def test_Cart():
     cart1 = Cart()
     assert cart1.items_stored == []
+    cart1.assign_cart(Shelf.all_shelves[0])
+    assert hasattr(cart1, "shelf") is True and cart1.shelf.number == 1
+    
 
     cart2 = Cart()
     assert cart2.items_stored == []
-    
-    cart3 = Cart()
-    assert cart3.items_stored == []
+    cart2.assign_cart(Shelf.all_shelves[1])
+    assert hasattr(cart2, "shelf") is True and cart2.shelf.number == 3
 
 
 def test_Order():
@@ -61,6 +55,7 @@ def test_Order():
     order3 = Order(2374, ["2355534", 4])
     assert order3.number == 2374
     assert order3.products_needed == ["2355534", 4]
+
 
 def test_Bin():
     garbagebin = Bin()
