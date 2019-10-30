@@ -157,7 +157,7 @@ class Bin:
                                 f"Order Fulfillment Invalid: {items_missing} more items of (product number: {product_number}) needed to complete order.")
 
         # remove products from order that are scanned into bin
-        self.products_needed = {item_num: quantity for item_num,
+        self.order.products_needed = {item_num: quantity for item_num,
                                 quantity in self.order.products_needed.items() if quantity is not None}
 
 
@@ -174,11 +174,12 @@ class Package:
 
     all_packages = []
 
-    def __init__(self, Bin: object, package_type: str):
+    def __init__(self, Bin: object, address: str, package_type: str):
         self.order_num = Bin.order.number
         self.bin = Bin
         self.type = package_type
         self.items = []
+        self.address = address
         self.stamped = False
         Package.all_packages.append(self)
 
@@ -186,24 +187,26 @@ class Package:
         """Put items into the package object"""
         items_packaged = []
         for item in self.bin.items_contained:
-            if item.number not in self.bin.products_needed.keys():
+            if item.number not in self.bin.order.products_needed.keys():
                 self.items.append(item)
                 items_packaged.append(item)
         for item in items_packaged:
             self.bin.items_contained.remove(item)
-        self.bin.order.status = "Completed"
+        if len(self.bin.order.products_needed) == 0:
+            self.bin.order.status = "Completed"
 
-    def send_to_truck(self, address: str):
+    @staticmethod
+    def send_to_truck():
         """Send package object to the conveyor belt to be taken to the truck
         Args:
             address: the address the package is being sent to
         """
-        if len(self.items) != 0:
-            for truck in Truck.all_trucks:
-                if self.order_num in truck.orders.keys():
-                    truck.orders[self.order_num] = self
-                    self.address = address
-                    self.stamped = True
+        for package in Package.all_packages:
+            if package.bin.order.status == "Completed":
+                for truck in Truck.all_trucks:
+                    if package.order_num in truck.orders.keys():
+                        truck.orders[package.order_num] = package
+                        package.stamped = True
 
 
 class Truck:

@@ -99,14 +99,31 @@ def test_Bin():
 
 
 def test_Package():
-    package1 = Package(Bin.all_bins[0], "Bag")
+    package1 = Package(Bin.all_bins[0], "Garbage Ave", "Bag")
     assert package1.order_num == 1
+    assert package1.type == "Bag"
+    assert len(package1.items) == 0
+    package1.pack_items()
+    assert len(package1.items) == 1
+    assert package1.bin.order.status == "Completed"
 
-    package2 = Package(Bin.all_bins[1], "Bag")
+    package2 = Package(Bin.all_bins[1], "Alan's House", "Bag")
     assert package2.order_num == 1229
+    assert package2.type == "Bag"
+    assert len(package2.items) == 0
+    package2.pack_items()
+    assert len(package2.items) == 1
+    assert package2.bin.order.status == "Completed"
+
     
-    package3 = Package(Bin.all_bins[2], "Box")
+    package3 = Package(Bin.all_bins[2], "Max's House", "Box")
     assert package3.order_num == 2374
+    assert package3.type == "Box"
+    assert len(package3.items) == 0
+    package3.pack_items()
+    assert len(package3.items) == 0
+    assert package3.bin.order.status == "Fulfilling"
+
 
 
 def test_Truck():
@@ -114,10 +131,11 @@ def test_Truck():
     assert truck1.number == 13
     assert truck1.orders == {1: None, 4: None, 5: None, 6: None, 7: None}
 
-    truck2 = Truck(232, [34, 454, 234, 54])
+    truck2 = Truck(232, [1229, 2374])
     assert truck2.number == 232
-    assert truck2.orders == {34: None, 454: None, 234: None, 54: None}
+    assert truck2.orders == {1229: None, 2374: None}
 
-    truck3 = Truck(133, [1, 34, 454, 234])
-    assert truck3.number == 133
-    assert truck3.orders == {1: None, 34: None, 454: None, 234: None}
+    Package.send_to_truck()
+    assert truck1.orders[1] != None
+    assert truck2.orders[1229] != None
+    assert truck2.orders[2374] == None
