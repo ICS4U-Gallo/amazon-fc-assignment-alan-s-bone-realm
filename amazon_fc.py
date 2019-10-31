@@ -62,6 +62,7 @@ class Cart:
 
     def __init__(self):
         self.items_stored = []
+        self.max_capacity = 100
 
     def assign_cart(self, shelf: object):
         """Assign the cart object to a shelf object"""
@@ -74,9 +75,10 @@ class Cart:
         """
         if hasattr(self, "shelf"):
             for item in Item.unsorted_items:
-                for product in self.shelf.compartments:
-                    if item.number == product["Product Number"]:
-                        self.items_stored.append(item)
+                if len(self.items_stored) < self.max_capacity:
+                    for product in self.shelf.compartments:
+                        if item.number == product["Product Number"]:
+                            self.items_stored.append(item)
 
     def scan_onto_shelf(self):
         """Scan item object from the trolly into compartments within the shelf"""

@@ -3,10 +3,10 @@ import arcade
 
 screen_width = 800
 screen_height = 600
-iphone = afc.Item("iphone", 100, 200, "iphone.png", 10, 4, 1)
-steak = afc.Item("Steak", 2, 2049555, "steak.png", 100, 50, 5)
-fish = afc.Item("Fish", 500000032010340124, 12415, "fish.png", 20, 10, 54)
-shoe = afc.Item("Shoe", 1342135, 1251572457, "shoe.png", 30, 5, 10)
+iphone = afc.Item("iphone", 100, "iphone.png", 10, 4, 1)
+steak = afc.Item("Steak", 2, "steak.png", 100, 50, 5)
+fish = afc.Item("Fish", 12415, "fish.png", 20, 10, 54)
+shoe = afc.Item("Shoe", 1342135, "shoe.png", 30, 5, 10)
 
 shipment = [iphone, steak, fish, shoe]
 
