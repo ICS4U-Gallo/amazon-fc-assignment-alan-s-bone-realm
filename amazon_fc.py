@@ -12,7 +12,7 @@ class Item:
         image (str): The picture of the product.
 
     """
-    unsorted_items = []
+    shipment = []
     sorted_items = []
     max_barcodes = 1000000
     barcodes = []
@@ -25,12 +25,11 @@ class Item:
         while True:
             if len(Item.barcodes) == Item.max_barcodes:
                 Item.max_barcodes *= 10
-            else:
-                self.barcode = random.randint(0, Item.max_barcodes)
-                if self.barcode not in Item.barcodes:
-                    Item.barcodes.append(self.barcode)
-                    break
-        Item.unsorted_items.append(self)
+            self.barcode = random.randint(0, Item.max_barcodes)
+            if self.barcode not in Item.barcodes:
+                Item.barcodes.append(self.barcode)
+                break
+        Item.shipment.append(self)
 
 
 class Shelf:
@@ -75,7 +74,7 @@ class Cart:
             items: a list of item objects
         """
         if hasattr(self, "shelf"):
-            for item in Item.unsorted_items:
+            for item in Item.shipment:
                 if len(self.items_stored) < self.max_capacity:
                     for product in self.shelf.compartments:
                         if item.number == product["Product Number"]:
@@ -94,7 +93,7 @@ class Cart:
                         product["Quantity"] += 1
                         items_added.append(item)
                         Item.sorted_items.append(item)
-                        Item.unsorted_items.remove(item)
+                        Item.shipment.remove(item)
             for item in items_added:
                 self.items_stored.remove(item)
 
@@ -194,6 +193,7 @@ class Package:
         for item in self.bin.items_contained:
             if item.number not in self.bin.order.products_needed.keys():
                 self.items.append(item)
+                Item.barcodes.remove(item.barcode)
                 items_packaged.append(item)
         for item in items_packaged:
             self.bin.items_contained.remove(item)

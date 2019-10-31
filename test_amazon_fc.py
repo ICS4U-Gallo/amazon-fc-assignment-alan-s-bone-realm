@@ -17,7 +17,7 @@ def test_Item():
     assert alans_left_shoe.number == 3
     assert alans_left_shoe.image == "shoes.jpg"
 
-    assert len(Item.unsorted_items) == 3
+    assert len(Item.shipment) == 3
 
 
 def test_Shelf():
@@ -42,7 +42,7 @@ def test_Cart():
     cart1.scan_onto_shelf()
     assert len(cart1.items_stored) == 0
     assert len(Item.sorted_items) == 2
-    assert len(Item.unsorted_items) == 1
+    assert len(Item.shipment) == 1
 
     cart2 = Cart()
     assert cart2.items_stored == []
@@ -53,7 +53,7 @@ def test_Cart():
     cart2.scan_onto_shelf()
     assert len(cart2.items_stored) == 0
     assert len(Item.sorted_items) == 3
-    assert len(Item.unsorted_items) == 0
+    assert len(Item.shipment) == 0
 
 
 def test_Order():

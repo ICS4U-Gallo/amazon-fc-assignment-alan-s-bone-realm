@@ -8,7 +8,6 @@ steak = afc.Item("Steak", 2, "steak.png", 100, 50, 5)
 fish = afc.Item("Fish", 12415, "fish.png", 20, 10, 54)
 shoe = afc.Item("Shoe", 1342135, "shoe.png", 30, 5, 10)
 
-shipment = [iphone, steak, fish, shoe]
 
 
 current_screen = 0
@@ -55,23 +54,23 @@ class drawings:
 
 
 def on_update(delta_time):
-    global clicked_prev, clicked_next, clicked_truck, clicked_cart, shipment
+    global clicked_prev, clicked_next, clicked_truck, clicked_cart
     global item
     shelf = 0
     if clicked_prev:
         if item > 0:
             item -= 1
-            shipment[item]
+            afc.Item.shipment[item]
         print(item)
-        print(shipment[item])
+        print(afc.Item.shipment[item])
         clicked_prev = False
 
     if clicked_next:
-        if item < len(shipment) - 1:
+        if item < len(afc.Item.shipment) - 1:
             item += 1
-            shipment[item]
+            afc.Item.shipment[item]
         print(item)
-        print(shipment[item])
+        print(afc.Item.shipment[item])
         clicked_next = False
 
     if clicked_truck:
@@ -81,9 +80,9 @@ def on_update(delta_time):
 
     if clicked_cart:
         print("cart")
-        afc.Cart.assign_cart(shipment, shelf)
-        for i in shipment:
-            afc.Cart.scan_onto_cart(shipment, shipment[i])
+        afc.Cart.assign_cart(afc.Item.shipment, shelf)
+        for i in afc.Item.shipment:
+            afc.Cart.scan_onto_cart(afc.Item.shipment, afc.Item.shipment[i])
         shelf += 1
         clicked_cart = False
 
@@ -91,11 +90,11 @@ def on_update(delta_time):
 def on_draw():
     arcade.start_render()
     drawings.box_item(
-        shipment[item], shipment[item].name, shipment[item].dimensions)
-    drawings.prev(shipment[item])
-    drawings.next(shipment[item])
-    drawings.truck(shipment[item])
-    drawings.cart(shipment[item])
+        afc.Item.shipment[item], afc.Item.shipment[item].name, afc.Item.shipment[item].dimensions)
+    drawings.prev(afc.Item.shipment[item])
+    drawings.next(afc.Item.shipment[item])
+    drawings.truck(afc.Item.shipment[item])
+    drawings.cart(afc.Item.shipment[item])
 
 
 def on_key_press(key, modifiers):
