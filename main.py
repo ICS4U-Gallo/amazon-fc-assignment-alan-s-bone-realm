@@ -91,11 +91,11 @@ def on_update(delta_time):
 
 def on_draw():
     arcade.start_render()
-    drawings.box_item(iphone, iphone.name, iphone.dimensions)
-    drawings.prev(iphone)
-    drawings.next(iphone)
-    drawings.truck(iphone)
-    drawings.cart(iphone)
+    drawings.box_item(shipment[item], shipment[item].name, shipment[item].dimensions)
+    drawings.prev(shipment[item])
+    drawings.next(shipment[item])
+    drawings.truck(shipment[item])
+    drawings.cart(shipment[item])
 
 
 def on_key_press(key, modifiers):
