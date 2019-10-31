@@ -3,6 +3,8 @@ import arcade
 
 screen_width = 800
 screen_height = 600
+
+
 iphone = afc.Item("iphone", 100, "iphone.png", 10, 4, 1)
 steak = afc.Item("Steak", 2, "steak.png", 100, 50, 5)
 fish = afc.Item("Fish", 12415, "fish.png", 20, 10, 54)
@@ -18,6 +20,7 @@ clicked_next = False
 clicked_truck = False
 clicked_cart = False
 item = 0
+cart = 0
 
 
 class drawings:
@@ -83,6 +86,7 @@ def on_update(delta_time):
     if clicked_cart:
         print("cart")
         afc.Cart.assign_cart(shipment, shelf)
+
         for i in shipment:
             afc.Cart.scan_onto_cart(shipment, shipment[i])
         shelf += 1
