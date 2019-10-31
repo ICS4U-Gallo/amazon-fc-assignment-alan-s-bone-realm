@@ -9,7 +9,6 @@ fish = afc.Item("Fish", 12415, "fish.png", 20, 10, 54)
 shoe = afc.Item("Shoe", 1342135, "shoe.png", 30, 5, 10)
 
 
-
 current_screen = 0
 
 clicked_prev = False
