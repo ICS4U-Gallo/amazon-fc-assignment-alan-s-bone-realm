@@ -12,10 +12,10 @@ def test_Item():
     assert fish.number == 2
     assert fish.image == "betafish.jpg"
 
-    alans_left_shoe = Item("Alan Left Shoe", 3, "shoes.jpg", 2, 3, 1)
-    assert alans_left_shoe.name == "Alan Left Shoe"
+    alans_left_shoe = Item.alans_left_shoe()
+    assert alans_left_shoe.name == "Alan's Left Shoe"
     assert alans_left_shoe.number == 3
-    assert alans_left_shoe.image == "shoes.jpg"
+    assert alans_left_shoe.image == "alansleftshoe.png"
 
     assert len(Item.shipment) == 3
 

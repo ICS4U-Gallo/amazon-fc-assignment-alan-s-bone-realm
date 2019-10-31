@@ -30,6 +30,11 @@ class Item:
                 Item.barcodes.append(self.barcode)
                 break
         Item.shipment.append(self)
+    
+    @classmethod
+    def alans_left_shoe(cls):
+        item = cls("Alan's Left Shoe", 3, "alansleftshoe.png", 14, 5, 2)
+        return item
 
 
 class Shelf:
