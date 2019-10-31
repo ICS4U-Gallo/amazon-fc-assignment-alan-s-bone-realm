@@ -10,7 +10,6 @@ steak = afc.Item("Steak", 2, "steak.png", 100, 50, 5)
 fish = afc.Item("Fish", 12415, "fish.png", 20, 10, 54)
 shoe = afc.Item("Shoe", 1342135, "shoe.png", 30, 5, 10)
 
-shipment = [iphone, steak, fish, shoe]
 
 
 current_screen = 0
@@ -38,7 +37,6 @@ class drawings:
         arcade.draw_text("NEXT", 750, 300, arcade.color.WHITE, 10,
                          200, "center", 'Arial', True, False, "center", "center")
 
-
     def box_item(self, name: str, dimensions: tuple):
         arcade.draw_rectangle_outline(400, 300, 200, 200, arcade.color.WHITE)
         arcade.draw_text(self.name, 400, 300, arcade.color.WHITE, 20,
@@ -54,52 +52,52 @@ class drawings:
 
     def truck(self):
         arcade.draw_rectangle_outline(750, 50, 50, 50, arcade.color.WHITE)
-        arcade.draw_text("TRUCK", 750, 50, arcade.color.WHITE, 9, 
+        arcade.draw_text("TRUCK", 750, 50, arcade.color.WHITE, 9,
                          200, "center", 'Arial', True, False, "center", "center")
 
 
 def on_update(delta_time):
-    global clicked_prev, clicked_next, clicked_truck, clicked_cart, shipment
+    global clicked_prev, clicked_next, clicked_truck, clicked_cart
     global item
     shelf = 0
     if clicked_prev:
         if item > 0:
             item -= 1
-            shipment[item]
+            afc.Item.shipment[item]
         print(item)
-        print(shipment[item])
+        print(afc.Item.shipment[item])
         clicked_prev = False
 
     if clicked_next:
-        if item < len(shipment) - 1:
+        if item < len(afc.Item.shipment) - 1:
             item += 1
-            shipment[item]
+            afc.Item.shipment[item]
         print(item)
-        print(shipment[item])
+        print(afc.Item.shipment[item])
         clicked_next = False
 
     if clicked_truck:
         print("truck")
         clicked_truck = False
         # New cart and trollys and bins add in when tests are done
-    
+
     if clicked_cart:
         print("cart")
-        afc.Cart.assign_cart(shipment, shelf)
-
-        for i in shipment:
-            afc.Cart.scan_onto_cart(shipment, shipment[i])
+        afc.Cart.assign_cart(afc.Item.shipment, shelf)
+        for i in afc.Item.shipment:
+            afc.Cart.scan_onto_cart(afc.Item.shipment, afc.Item.shipment[i])
         shelf += 1
         clicked_cart = False
 
 
 def on_draw():
     arcade.start_render()
-    drawings.box_item(shipment[item], shipment[item].name, shipment[item].dimensions)
-    drawings.prev(shipment[item])
-    drawings.next(shipment[item])
-    drawings.truck(shipment[item])
-    drawings.cart(shipment[item])
+    drawings.box_item(
+        afc.Item.shipment[item], afc.Item.shipment[item].name, afc.Item.shipment[item].dimensions)
+    drawings.prev(afc.Item.shipment[item])
+    drawings.next(afc.Item.shipment[item])
+    drawings.truck(afc.Item.shipment[item])
+    drawings.cart(afc.Item.shipment[item])
 
 
 def on_key_press(key, modifiers):
@@ -112,19 +110,19 @@ def on_key_release(key, modifiers):
 
 def on_mouse_press(x, y, button, modifiers):
     global clicked_prev, clicked_next, clicked_truck, clicked_cart
-    
+
     # Previous button
     if (25 <= x <= 75) and (275 <= y <= 325):
         clicked_prev = True
-    
+
     # Next button
     if (725 <= x <= 775) and (275 <= y <= 325):
         clicked_next = True
-    
+
     # Truck button
     if (725 <= x <= 775) and (25 <= y <= 75):
         clicked_truck = True
-    
+
     # Cart button
     if (650 <= x <= 700) and (25 <= y <= 75):
         clicked_cart = True

@@ -12,7 +12,7 @@ class Item:
         image (str): The picture of the product.
 
     """
-    unsorted_items = []
+    shipment = []
     sorted_items = []
     max_barcodes = 1000000
     barcodes = []
@@ -25,12 +25,11 @@ class Item:
         while True:
             if len(Item.barcodes) == Item.max_barcodes:
                 Item.max_barcodes *= 10
-            else:
-                self.barcode = random.randint(0, Item.max_barcodes)
-                if self.barcode not in Item.barcodes:
-                    Item.barcodes.append(self.barcode)
-                    break
-        Item.unsorted_items.append(self)
+            self.barcode = random.randint(0, Item.max_barcodes)
+            if self.barcode not in Item.barcodes:
+                Item.barcodes.append(self.barcode)
+                break
+        Item.shipment.append(self)
 
 
 class Shelf:
@@ -49,7 +48,8 @@ class Shelf:
         self.number = shelf_number
         self.compartments = []
         for product_number in product_numbers:
-            self.compartments.append({"Product Number": product_number, "Quantity": 0, "Items Stored": None})
+            self.compartments.append(
+                {"Product Number": product_number, "Quantity": 0, "Items Stored": None})
         Shelf.all_shelves.append(self)
 
 
@@ -74,7 +74,7 @@ class Cart:
             items: a list of item objects
         """
         if hasattr(self, "shelf"):
-            for item in Item.unsorted_items:
+            for item in Item.shipment:
                 if len(self.items_stored) < self.max_capacity:
                     for product in self.shelf.compartments:
                         if item.number == product["Product Number"]:
@@ -93,7 +93,7 @@ class Cart:
                         product["Quantity"] += 1
                         items_added.append(item)
                         Item.sorted_items.append(item)
-                        Item.unsorted_items.remove(item)
+                        Item.shipment.remove(item)
             for item in items_added:
                 self.items_stored.remove(item)
 
@@ -145,8 +145,10 @@ class Bin:
                 for product in shelf.compartments:
                     if product_number == product["Product Number"]:
                         while product["Quantity"] > 0 and self.order.products_needed[product_number] > 0:
-                            self.items_contained.append(product["Items Stored"][0])
-                            Item.sorted_items.remove(product["Items Stored"][0])
+                            self.items_contained.append(
+                                product["Items Stored"][0])
+                            Item.sorted_items.remove(
+                                product["Items Stored"][0])
                             product["Items Stored"].pop(0)
                             self.order.products_needed[product_number] -= 1
                             product["Quantity"] -= 1
@@ -160,7 +162,7 @@ class Bin:
 
         # remove products from order that are scanned into bin
         self.order.products_needed = {item_num: quantity for item_num,
-                                quantity in self.order.products_needed.items() if quantity is not None}
+                                      quantity in self.order.products_needed.items() if quantity is not None}
 
 
 class Package:
@@ -191,6 +193,7 @@ class Package:
         for item in self.bin.items_contained:
             if item.number not in self.bin.order.products_needed.keys():
                 self.items.append(item)
+                Item.barcodes.remove(item.barcode)
                 items_packaged.append(item)
         for item in items_packaged:
             self.bin.items_contained.remove(item)
@@ -204,7 +207,7 @@ class Package:
             address: the address the package is being sent to
         """
         for package in Package.all_packages:
-            if package.bin.order.status == "Completed":
+            if package.bin.order.status == "Completed" and package.stamped is False:
                 for truck in Truck.all_trucks:
                     if package.order_num in truck.orders.keys():
                         truck.orders[package.order_num] = package
