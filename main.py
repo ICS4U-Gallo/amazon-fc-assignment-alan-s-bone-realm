@@ -35,7 +35,6 @@ class drawings:
         arcade.draw_text("NEXT", 750, 300, arcade.color.WHITE, 10,
                          200, "center", 'Arial', True, False, "center", "center")
 
-
     def box_item(self, name: str, dimensions: tuple):
         arcade.draw_rectangle_outline(400, 300, 200, 200, arcade.color.WHITE)
         arcade.draw_text(self.name, 400, 300, arcade.color.WHITE, 20,
@@ -51,7 +50,7 @@ class drawings:
 
     def truck(self):
         arcade.draw_rectangle_outline(750, 50, 50, 50, arcade.color.WHITE)
-        arcade.draw_text("TRUCK", 750, 50, arcade.color.WHITE, 9, 
+        arcade.draw_text("TRUCK", 750, 50, arcade.color.WHITE, 9,
                          200, "center", 'Arial', True, False, "center", "center")
 
 
@@ -79,7 +78,7 @@ def on_update(delta_time):
         print("truck")
         clicked_truck = False
         # New cart and trollys and bins add in when tests are done
-    
+
     if clicked_cart:
         print("cart")
         afc.Cart.assign_cart(shipment, shelf)
@@ -91,7 +90,8 @@ def on_update(delta_time):
 
 def on_draw():
     arcade.start_render()
-    drawings.box_item(shipment[item], shipment[item].name, shipment[item].dimensions)
+    drawings.box_item(
+        shipment[item], shipment[item].name, shipment[item].dimensions)
     drawings.prev(shipment[item])
     drawings.next(shipment[item])
     drawings.truck(shipment[item])
@@ -108,19 +108,19 @@ def on_key_release(key, modifiers):
 
 def on_mouse_press(x, y, button, modifiers):
     global clicked_prev, clicked_next, clicked_truck, clicked_cart
-    
+
     # Previous button
     if (25 <= x <= 75) and (275 <= y <= 325):
         clicked_prev = True
-    
+
     # Next button
     if (725 <= x <= 775) and (275 <= y <= 325):
         clicked_next = True
-    
+
     # Truck button
     if (725 <= x <= 775) and (25 <= y <= 75):
         clicked_truck = True
-    
+
     # Cart button
     if (650 <= x <= 700) and (25 <= y <= 75):
         clicked_cart = True

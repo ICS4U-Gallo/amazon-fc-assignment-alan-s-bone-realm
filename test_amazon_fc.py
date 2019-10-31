@@ -43,7 +43,7 @@ def test_Cart():
     assert len(cart1.items_stored) == 0
     assert len(Item.sorted_items) == 2
     assert len(Item.unsorted_items) == 1
-    
+
     cart2 = Cart()
     assert cart2.items_stored == []
     cart2.assign_cart(Shelf.all_shelves[1])
@@ -54,7 +54,7 @@ def test_Cart():
     assert len(cart2.items_stored) == 0
     assert len(Item.sorted_items) == 3
     assert len(Item.unsorted_items) == 0
-    
+
 
 def test_Order():
     order1 = Order(1, {1: 1})
@@ -68,31 +68,33 @@ def test_Order():
     order3 = Order(2374, {3: 2})
     assert order3.number == 2374
     assert order3.products_needed == {3: 2}
-    
+
     assert len(Order.all_orders) == 3
-    
+
 
 def test_Bin():
     garbagebin = Bin()
     assert garbagebin.items_contained == []
     assert garbagebin in Bin.all_bins
     garbagebin.assign_order()
-    assert hasattr(garbagebin, "order") is True and garbagebin.order.status == "Fulfilling"
+    assert hasattr(
+        garbagebin, "order") is True and garbagebin.order.status == "Fulfilling"
     garbagebin.scan_into_bin()
 
     alanbin = Bin()
     assert alanbin.items_contained == []
     assert alanbin in Bin.all_bins
     alanbin.assign_order()
-    assert hasattr(alanbin, "order") is True and alanbin.order.status == "Fulfilling"
+    assert hasattr(
+        alanbin, "order") is True and alanbin.order.status == "Fulfilling"
     alanbin.scan_into_bin()
-
 
     maxbin = Bin()
     assert maxbin.items_contained == []
     assert maxbin in Bin.all_bins
     maxbin.assign_order()
-    assert hasattr(maxbin, "order") is True and maxbin.order.status == "Fulfilling"
+    assert hasattr(
+        maxbin, "order") is True and maxbin.order.status == "Fulfilling"
     maxbin.scan_into_bin()
     assert len(maxbin.items_contained) == 1
     assert maxbin.order.products_needed == {3: 1}
@@ -115,7 +117,6 @@ def test_Package():
     assert len(package2.items) == 1
     assert package2.bin.order.status == "Completed"
 
-    
     package3 = Package(Bin.all_bins[2], "Max's House", "Box")
     assert package3.order_num == 2374
     assert package3.type == "Box"
@@ -123,7 +124,6 @@ def test_Package():
     package3.pack_items()
     assert len(package3.items) == 0
     assert package3.bin.order.status == "Fulfilling"
-
 
 
 def test_Truck():
