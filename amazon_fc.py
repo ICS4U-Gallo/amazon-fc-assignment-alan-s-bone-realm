@@ -63,6 +63,7 @@ class Cart:
 
     Attrs:
         items_stored: An empty list.
+        max_capacity: 100
     """
 
     def __init__(self):
