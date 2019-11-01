@@ -1,5 +1,6 @@
 import amazon_fc as afc
-import arcade, random
+import arcade
+import random
 
 screen_width = 800
 screen_height = 600
@@ -32,19 +33,7 @@ clicked_add_to_cart = False
 
 
 item = 0
-cart_number = 0
-carts = []
 
-
-shelf_number = 0
-shelves = []
-product_numbers = []
-
-bin_number = 0
-bins = []
-
-package_number = 0
-packages = []
 
 
 class drawings:
@@ -107,7 +96,6 @@ def on_update(delta_time):
             afc.Item.shipment[item]
         print(item)
         print(afc.Item.shipment[item])
-        # print("Cart ID:", str(cart_id))
         clicked_prev = False
 
     if clicked_next:
@@ -117,7 +105,6 @@ def on_update(delta_time):
             afc.Item.shipment[item]
         print(item)
         print(afc.Item.shipment[item])
-        # print("Cart ID:", str(cart_id))
         clicked_next = False
 
     if clicked_add_to_cart:
@@ -146,15 +133,15 @@ def on_update(delta_time):
 
         clicked_shipment = False
 
-    
     if clicked_order_fulfillment:
         print("Order Fulfillment Station")
         bins.append(afc.Bin())
         bins[bin_number].assign_order()
         bins[bin_number].scan_into_bin
-        packages.append(afc.Package(bins[bin_number], "A test case", "A test case"))
+        packages.append(afc.Package(
+            bins[bin_number], "A test case", "A test case"))
         clicked_order_fulfillment = False
-    
+
     if clicked_ship_out:
         print("Ship - Out Station")
         afc.Package.send_to_truck()
