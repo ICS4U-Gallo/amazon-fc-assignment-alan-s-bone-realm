@@ -1,19 +1,30 @@
 import amazon_fc as afc
-import arcade
+import arcade, random
 
 screen_width = 800
 screen_height = 600
 
 
-iphone = afc.Item("iphone", 100, "iphone.png", 10, 4, 1)
-steak = afc.Item("Steak", 2, "steak.png", 100, 50, 5)
-fish = afc.Item("Fish", 12415, "fish.png", 20, 10, 54)
-shoe = afc.Item("Shoe", 13467, "shoe.png", 30, 5, 10)
+iphone = afc.Item.iphone()
+steak = afc.Item.steak()
+fish = afc.Item.fish()
+shoe = afc.Item.alans_left_shoe()
+
+food_shelf = afc.Shelf([2, 12415])
+tech_shelf = afc.Shelf([100])
+footwear_shelf = afc.Shelf([3])
+
+cart1 = afc.Cart()
+cart1.assign_cart(food_shelf)
+cart2 = afc.Cart()
+cart2.assign_cart(tech_shelf)
+cart3 = afc.Cart()
+cart3.assign_cart(footwear_shelf)
 
 
 clicked_prev = False
 clicked_next = False
-clicked_create = False
+clicked_shipment = False
 
 clicked_order_fulfillment = False
 clicked_ship_out = False
@@ -58,10 +69,12 @@ class drawings:
         arcade.draw_text(f"{self.dimensions[0]} cm x {self.dimensions[1]} cm x "
                          f"{self.dimensions[2]} cm", 400, 225, arcade.color.WHITE,
                          10, 200, "center", 'Arial', True, False, "center", "center")
+        arcade.draw_text(f"Item {item + 1}", 400, 450, arcade.color.WHITE,
+                         20, 200, "center", 'Arial', True, False, "center", "center")
 
-    def create(self):
-        arcade.draw_rectangle_outline(725, 75, 100, 100, arcade.color.WHITE)
-        arcade.draw_text("CREATE", 725, 75, arcade.color.WHITE, 15, 200,
+    def shipment(self):
+        arcade.draw_rectangle_outline(700, 50, 50, 50, arcade.color.WHITE)
+        arcade.draw_text("SHIPMENT", 700, 50, arcade.color.WHITE, 8, 200,
                          "center", 'Arial', True, False, "center", "center")
 
     def add_to_cart(self):
@@ -81,10 +94,11 @@ class drawings:
 
 
 def on_update(delta_time):
-    global clicked_prev, clicked_next, clicked_create
+    global clicked_prev, clicked_next, clicked_shipment
     global clicked_order_fulfillment, clicked_ship_out, clicked_add_to_cart
     global item, carts, shelves, cart_number, shelf_number, product_numbers
     global bins, bin_number
+    global cart1, cart2, cart3
 
     if clicked_prev:
         print("previous item")
@@ -108,23 +122,29 @@ def on_update(delta_time):
 
     if clicked_add_to_cart:
         print("Added to cart")
-        if afc.Item.shipment[item].number not in product_numbers:
-            product_numbers.append(afc.Item.shipment[item].number)
-        print(product_numbers)
+        if afc.Item.shipment[item].number in food_shelf.product_numbers:
+            cart1.scan_onto_cart()
+        elif afc.Item.shipment[item].number in tech_shelf.product_numbers:
+            cart2.scan_onto_cart()
+        elif afc.Item.shipment[item].number in footwear_shelf.product_numbers:
+            cart3.scan_onto_cart()
         clicked_add_to_cart = False
 
-    if clicked_create:
-        print("create")
-        shelves.append(afc.Shelf(shelf_number, afc.Item.shipment[item].number))
-        carts.append(afc.Cart())
-        carts[cart_number].assign_cart(carts[cart_number], shelves[shelf_number])
-        carts[cart_number].scan_onto_cart(carts[cart_number])
-        carts[cart_number].scan_onto_shelf(carts[cart_number])
+    if clicked_shipment:
+        print("shipment")
+        for num in range(5):
+            product_List = ["alan's left shoe", "iphone", "steak", "fish"]
+            product = random.choice(product_List)
+            if product == "alan's left shoe":
+                new_item = afc.Item.alans_left_shoe()
+            elif product == "iphone":
+                new_item = afc.Item.iphone()
+            elif product == "steak":
+                new_item = afc.Item.steak()
+            elif product == "fish":
+                new_item = afc.Item.fish()
 
-        shelf_number += 1
-        cart_number += 1
-
-        clicked_create = False
+        clicked_shipment = False
 
     
     if clicked_order_fulfillment:
@@ -147,14 +167,14 @@ def on_draw():
                       afc.Item.shipment[item].dimensions)
     drawings.prev(afc.Item.shipment[item])
     drawings.next(afc.Item.shipment[item])
-    drawings.create(afc.Item.shipment[item])
+    drawings.shipment(afc.Item.shipment[item])
     drawings.add_to_cart(afc.Item.shipment[item])
     drawings.ship_out(afc.Item.shipment[item])
     drawings.order_fulfillment(afc.Item.shipment[item])
 
 
 def on_key_press(key, modifiers):
-    global clicked_prev, clicked_next, clicked_create
+    global clicked_prev, clicked_next, clicked_shipment
 
     if key == arcade.key.LEFT:
         clicked_prev = True
@@ -163,11 +183,11 @@ def on_key_press(key, modifiers):
         clicked_next = True
 
     if key == arcade.key.ENTER:
-        clicked_create = True
+        clicked_shipment = True
 
 
 def on_key_release(key, modifiers):
-    global clicked_prev, clicked_next, clicked_create
+    global clicked_prev, clicked_next, clicked_shipment
 
     if key == arcade.key.LEFT:
         clicked_prev = False
@@ -176,11 +196,11 @@ def on_key_release(key, modifiers):
         clicked_next = False
 
     if key == arcade.key.ENTER:
-        clicked_create = False
+        clicked_shipment = False
 
 
 def on_mouse_press(x, y, button, modifiers):
-    global clicked_prev, clicked_next, clicked_create
+    global clicked_prev, clicked_next, clicked_shipment
     global clicked_order_fulfillment, clicked_ship_out, clicked_add_to_cart
 
     # Previous button
@@ -191,9 +211,9 @@ def on_mouse_press(x, y, button, modifiers):
     if (725 <= x <= 775) and (275 <= y <= 325):
         clicked_next = True
 
-    # Create button
-    if (675 <= x <= 775) and (25 <= y <= 125):
-        clicked_create = True
+    # shipment button
+    if (675 <= x <= 725) and (25 <= y <= 75):
+        clicked_shipment = True
 
     # Previous cart button
     if (450 <= x <= 500) and (25 <= y <= 75):

@@ -21,13 +21,13 @@ def test_Item():
 
 
 def test_Shelf():
-    shelf1 = Shelf(1, [1, 2, 4])
-    assert shelf1.number == 1
+    shelf1 = Shelf([1, 2, 4])
+    assert shelf1.number == 0
     assert shelf1.compartments == [{"Product Number": 1, "Quantity": 0, "Items Stored": None}, {
         "Product Number": 2, "Quantity": 0, "Items Stored": None}, {"Product Number": 4, "Quantity": 0, "Items Stored": None}]
 
-    shelf2 = Shelf(3, [3, 5, 10])
-    assert shelf2.number == 3
+    shelf2 = Shelf([3, 5, 10])
+    assert shelf2.number == 1
     assert shelf2.compartments == [{"Product Number": 3, "Quantity": 0, "Items Stored": None}, {
         "Product Number": 5, "Quantity": 0, "Items Stored": None}, {"Product Number": 10, "Quantity": 0, "Items Stored": None}]
 
@@ -36,7 +36,7 @@ def test_Cart():
     cart1 = Cart()
     assert cart1.items_stored == []
     cart1.assign_cart(Shelf.all_shelves[0])
-    assert hasattr(cart1, "shelf") is True and cart1.shelf.number == 1
+    assert hasattr(cart1, "shelf") is True and cart1.shelf.number == 0
     cart1.scan_onto_cart()
     assert len(cart1.items_stored) == 2
     cart1.scan_onto_shelf()
@@ -47,7 +47,7 @@ def test_Cart():
     cart2 = Cart()
     assert cart2.items_stored == []
     cart2.assign_cart(Shelf.all_shelves[1])
-    assert hasattr(cart2, "shelf") is True and cart2.shelf.number == 3
+    assert hasattr(cart2, "shelf") is True and cart2.shelf.number == 1
     cart2.scan_onto_cart()
     assert len(cart2.items_stored) == 1
     cart2.scan_onto_shelf()

@@ -35,6 +35,21 @@ class Item:
     def alans_left_shoe(cls):
         item = cls("Alan's Left Shoe", 3, "alansleftshoe.png", 14, 5, 2)
         return item
+    
+    @classmethod
+    def iphone(cls):
+        item = cls("iphone", 100, "iphone.png", 10, 4, 1)
+        return item
+    
+    @classmethod
+    def steak(cls):
+        item = cls("Steak", 2, "steak.png", 100, 50, 5)
+        return item
+    
+    @classmethod
+    def fish(cls):
+        item = cls("Fish", 12415, "fish.png", 20, 10, 54)
+        return item
 
 
 class Shelf:
@@ -46,16 +61,18 @@ class Shelf:
         product_nums (List[int]): A list of unique item identifications numbers.
 
     """
-
+    shelf_count = 0
     all_shelves = []
 
-    def __init__(self, shelf_number: int, product_numbers: List[int]):
-        self.number = shelf_number
+    def __init__(self, product_numbers: List[int]):
+        self.number = Shelf.shelf_count
+        self.product_numbers = product_numbers
         self.compartments = []
         for product_number in product_numbers:
             self.compartments.append(
                 {"Product Number": product_number, "Quantity": 0, "Items Stored": None})
         Shelf.all_shelves.append(self)
+        Shelf.shelf_count += 1
 
 
 class Cart:
